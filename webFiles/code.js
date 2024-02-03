@@ -139,7 +139,7 @@ function initializeDisplay() {
         .selectAll("text")
         .data(graph.nodes)
         .enter().append("text")
-        .text(function (d) { return "username" });
+        .text(function (d) { return d.name });
 
     // node tooltip
     node.append("title")
