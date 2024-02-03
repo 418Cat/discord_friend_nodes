@@ -34,7 +34,7 @@ async function main()
                 frNetwork["nodes"].push(
                 {
                     "id":parseInt(friend.user.id),
-                    "name":friend.user.global_name == null ? "Deleted user" : `${friend.user.global_name}`
+                    "name":getName(friend.user)
                 });
 
                 // Add common friends to links
@@ -49,7 +49,7 @@ async function main()
                             });
 
                             // Some users might not exist anymore
-                            console.log(`\rLink between ${friend.user.global_name == null ? "Deleted user" : friend.user.global_name} and ${commonFriend.global_name == null ? "Deleted user" : commonFriend.global_name} added`);
+                            console.log(`\rLink between ${getName(friend.user)} and ${getName(commonFriend)} added`);
                     }
                 });
                 console.log("");
@@ -78,6 +78,17 @@ async function main()
 // Used to not spam the discord api
 async function sleep(millis) {
     return new Promise(resolve => setTimeout(resolve, millis));
+}
+
+function getName(user)
+{
+    if(user.global_name != null) return user.global_name;
+
+    if(user.username != null) return user.username;
+
+    return "Deleted user";
+
+
 }
 
 main();
