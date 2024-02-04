@@ -12,7 +12,7 @@ async function main()
 {
     if(!fs.existsSync("./webFiles/data.json"))
     {
-        console.log("/!\\\ndata.json not found, retrieving friend list from the discord API\n");
+        console.log("/!\\\ndata.json not found, retrieving friend list from the discord API\n\n");
 
         // Get the friends
         frLinks.getFriends(config.token).then(async function(friendsJson)
@@ -24,7 +24,7 @@ async function main()
             }
             for(const friend of friendsJson)
             {
-                // Make sure to not exceed the rate limit
+                // Make sure to not exceed the discord API rate limit
                 /*
                  *  MODIFY AT YOUR OWN RISKS, YOU CAN VERY MUCH GET BANNED IF YOU SET IT TOO LOW
                  */
@@ -42,14 +42,16 @@ async function main()
                 {
                     for(const commonFriend of commonFriends)
                     {
-                        frNetwork["links"].push(
+                        // Check if the link was previously created the other way around
+                        if(!linkExists(parseInt(commonFriend.id), parseInt(friend.user.id)))
+                        {
+                            frNetwork["links"].push(
                             {
                                 "source":parseInt(friend.user.id),
                                 "target":parseInt(commonFriend.id)
                             });
-
-                            // Some users might not exist anymore
                             console.log(`\rLink between ${getName(friend.user)} and ${getName(commonFriend)} added`);
+                        }
                     }
                 });
                 console.log("");
@@ -80,6 +82,8 @@ async function sleep(millis) {
     return new Promise(resolve => setTimeout(resolve, millis));
 }
 
+// Some users didn't switch to the new username system
+// So user.global_name was returned as null
 function getName(user)
 {
     if(user.global_name != null) return user.global_name;
@@ -89,6 +93,16 @@ function getName(user)
     return "Deleted user";
 
 
+}
+
+function linkExists(source, target)
+{
+    for(const link of frNetwork.links)
+    {
+        if(link.source == source && link.target == target) return true;
+    }
+
+    return false;
 }
 
 main();

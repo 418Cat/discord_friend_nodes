@@ -178,8 +178,9 @@ function ticked() {
     d3.select('#alpha_value').style('flex-basis', (simulation.alpha() * 100) + '%');
 
     text
-        .attr("dx", function (d) { return d.x - 50; })
-        .attr("dy", function (d) { return d.y - 15; })
+        // Center the name depending on its length
+        .attr("dx", function (d) { return d.x - 7 * (d.name.length / 2); })
+        .attr("dy", function (d) { return d.y - 17; })
 
 
 }
