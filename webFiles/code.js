@@ -40,27 +40,27 @@ forceProperties = {
         enabled: true,
         strength: -100,
         distanceMin: 1,
-        distanceMax: 2000
+        distanceMax: 1000
     },
     collide: {
         enabled: true,
-        strength: .7,
+        strength: .5,
         iterations: 1,
-        radius: 12
+        radius: 30
     },
     forceX: {
         enabled: true,
-        strength: .06,
+        strength: .045,
         x: .04
     },
     forceY: {
         enabled: true,
-        strength: .06,
+        strength: .045,
         y: .04
     },
     link: {
         enabled: true,
-        distance: 50,
+        distance: 75,
         iterations: 3
     }
 }
@@ -152,9 +152,10 @@ function initializeDisplay() {
 // update the display based on the forces (but not positions)
 function updateDisplay() {
     node
-        .attr("r", forceProperties.collide.radius)
-        .attr("stroke", forceProperties.charge.strength > 0 ? "blue" : "red")
-        //.attr("stroke-width", forceProperties.charge.enabled == false ? 0 : Math.abs(forceProperties.charge.strength) / 15);
+        .attr("r", 10)
+        .attr("stroke", "black")
+        .attr("stroke-width", 2)
+        .attr("fill", "gray");
 
     link
         .attr("stroke-width", forceProperties.link.enabled ? 1 : .5)
@@ -179,10 +180,8 @@ function ticked() {
 
     text
         // Center the name depending on its length
-        .attr("dx", function (d) { return d.x - 7 * (d.name.length / 2); })
-        .attr("dy", function (d) { return d.y - 17; })
-
-
+        .attr("dx", function (d) { return d.x - 8 * (d.name.length / 2); })
+        .attr("dy", function (d) { return d.y - 16; })
 }
 
 
